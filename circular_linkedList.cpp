@@ -56,6 +56,37 @@ class List{
             }
         }
 
+        void insert_at(int value, int pos)
+        {
+            Node* newNode = new Node(value);
+            Node* temp = tail->next;
+
+            if(pos == 0)
+            {
+                insert_head(value);
+            }
+            else
+            {
+                for(int i=0 ; i<pos-1; i++)
+                {
+                    temp = temp->next;
+                    if (temp == tail->next)
+                    {
+                        return;
+                    }
+                }
+
+                if(temp == tail)
+                {
+                    insert_end(value);
+                    return;
+                }
+
+                newNode->next = temp->next;
+                temp->next = newNode;
+            }
+        }
+
         void display()
         {
             Node* temp = tail->next;
@@ -87,11 +118,19 @@ int main()
 
 
     //====================To Test insert_head Function========
-    L1.insert_head(0);
-    L1.insert_head(1);
-    L1.insert_head(2);
-    L1.insert_head(3);
-    L1.display();
+    // L1.insert_head(0);
+    // L1.insert_head(1);
+    // L1.insert_head(2);
+    // L1.insert_head(3);
+    // L1.display();
 
+
+    //===================To test insert_at Function=======
+    // L1.insert_head(0);
+    // L1.insert_head(1);
+    // L1.insert_head(2);
+    // L1.insert_head(3);
+    // L1.insert_at(200,2);
+    // L1.display();
     return 0;
 }
