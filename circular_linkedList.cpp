@@ -41,6 +41,21 @@ class List{
 
         }
 
+        void insert_head(int value)
+        {
+            Node* newNode = new Node(value);
+            if(tail == nullptr)
+            {
+                tail = newNode;
+                tail->next = tail;
+            }
+            else
+            {
+                newNode->next = tail->next;
+                tail->next = newNode;
+            }
+        }
+
         void display()
         {
             Node* temp = tail->next;
@@ -68,6 +83,15 @@ int main()
     // L1.insert_end(0);
     // cout << endl;
     // L1.display();
+
+
+
+    //====================To Test insert_head Function========
+    L1.insert_head(0);
+    L1.insert_head(1);
+    L1.insert_head(2);
+    L1.insert_head(3);
+    L1.display();
 
     return 0;
 }
