@@ -87,6 +87,53 @@ class List{
             }
         }
 
+        void remove_first()
+        {
+            tail->next = tail->next->next;
+        }
+
+        void remove_last()
+        {
+            Node* temp = tail->next;
+
+            while(temp->next != tail)
+            {
+                temp = temp->next;
+            }
+
+            temp->next = tail->next;
+            tail = temp;
+        }
+
+        void remove_at(int pos)
+        {
+            Node* temp = tail->next;
+
+            if(pos == 0)
+            {
+                remove_first();
+            }
+            else
+            {
+                for(int i=0 ; i<pos-1 ; i++)
+                {
+                    temp = temp->next;
+                    if(temp == tail)
+                    {
+                        return;
+                    }
+                }
+
+                if(temp->next == tail)
+                {
+                    remove_last();
+                    return;
+                }
+
+                temp->next = temp->next->next;
+            }
+        }
+
         void display()
         {
             Node* temp = tail->next;
@@ -98,6 +145,8 @@ class List{
                 
             }
             while(temp != tail->next);
+
+            cout << endl;
         }
 };
 
@@ -125,12 +174,28 @@ int main()
     // L1.display();
 
 
-    //===================To test insert_at Function=======
+    //===================To test insert_at Function===========
     // L1.insert_head(0);
     // L1.insert_head(1);
     // L1.insert_head(2);
     // L1.insert_head(3);
     // L1.insert_at(200,2);
+    // L1.display();
+
+
+    //===================To Test all remove Functions=========
+    // L1.insert_head(0);
+    // L1.insert_head(1);
+    // L1.insert_head(2);
+    // L1.insert_head(3);
+    // L1.insert_head(4);
+    // L1.insert_head(5);
+    // L1.display();
+    // L1.remove_first();
+    // L1.display();
+    // L1.remove_last();
+    // L1.display();
+    // L1.remove_at(2);
     // L1.display();
     return 0;
 }
