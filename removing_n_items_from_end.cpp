@@ -86,6 +86,7 @@ class List{
 
                 if(preTemp == head && it == index)
                 {
+                    cout << "HEAD EXECUTING" << endl;
                     head = head->next;
                     delete preTemp;
                     preTemp = nullptr;
@@ -98,6 +99,17 @@ class List{
                     delete rm;
                     rm = nullptr;
                 }
+                else if(it == index+1)
+                {
+                    Node* rm = preTemp->next;
+                    preTemp->next = preTemp->next->next;
+                    delete rm;
+                    rm = nullptr;
+                }
+                else
+                {
+                    cout << "Index is out of range" << endl;
+                }
             }
         }
 };
@@ -107,6 +119,12 @@ int main()
 {
     List L1;
 
+    L1.insert_head(9);
+    L1.insert_head(8);
+    L1.insert_head(7);
+    L1.insert_head(6);
+    L1.insert_head(5);
+    L1.insert_head(4);
     L1.insert_head(3);
     L1.insert_head(2);
     L1.insert_head(1);
@@ -119,6 +137,12 @@ int main()
     L1.remove_end(1);
     L1.display();
     L1.remove_end(1);
+    L1.display();
+
+
+    L1.remove_end(3);
+    L1.display();
+    L1.remove_end(5);
     L1.display();
     return 0;
 }
