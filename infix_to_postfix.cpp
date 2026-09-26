@@ -40,7 +40,7 @@ void infix_to_postfix(string str)
         }
         if(str[i] == ')')
         {
-            while(s.top() != '(')
+            while(!s.empty() && s.top() != '(')
             {
                 res += s.top();
                 s.pop();
@@ -49,6 +49,13 @@ void infix_to_postfix(string str)
         }
         if(str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/')
         {
+            while(!s.empty() && (pres(s.top()) <= pres(str[i])))
+            {
+                res += s.top();
+                s.pop();
+
+            }
+            
             s.push(str[i]);
         }
     }
@@ -63,11 +70,13 @@ void infix_to_postfix(string str)
 
 
 int main()
-{
-    string str;
-    cout << "Enter the infix expression: ";
-    cin >> str;
-    infix_to_postfix(str);
+{   
+    while(true)
+    {    string str;
+        cout << "Enter the infix expression: ";
+        cin >> str;
+        
+        infix_to_postfix(str);}
     return 0;
   
 }
