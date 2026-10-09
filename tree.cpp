@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 using namespace std;
 
 struct Node{
@@ -12,28 +13,46 @@ struct Node{
         left = nullptr;
         right = nullptr;
     }
+    
 };
 
 class Tree{
-    Node* root;
+    private:
 
-    public:
-        Tree()
+        Node* root;
+        void insert(int value, Node*& node)
         {
-            root = nullptr;
+            if(node == nullptr)
+            {
+                Node* newNode = new Node(value);
+                node = newNode;
+                return;
+            }
+    
+            if(value < node->data)
+            {
+                if(node->left == nullptr)
+                {
+                    Node* newNode = new Node(value);
+                    node->left = newNode;
+                    return;
+                }
+                insert(value , node->left);
+            }
+
+            if(value > node->data)
+            {
+                if(node->right == nullptr)
+                {
+                    Node* newNode = new Node(value);
+                    node->right = newNode;
+                    return;
+                }
+                insert(value , node->right);
+            }
+            
         }
-
-        void createTree(int value , int left , int right)
-        {
-            Node* newRoot = new Node(value);
-            Node* newLeft = new Node(left);
-            Node* newRight = new Node(right);
-
-            root = newRoot;
-            root->left = newLeft;
-            root->right = newRight;
-        }
-
+    
         void preOrder(Node* node)
         {
             if(node  == nullptr) return;
@@ -64,40 +83,7 @@ class Tree{
             cout << node->data << " ";
         }
 
-        void insert(int value, Node*& node)
-        {
-            
-
-            if(node == nullptr)
-            {
-                Node* newNode = new Node(value);
-                node = newNode;
-                return;
-            }
- 
-            if(value < node->data)
-            {
-                if(node->left == nullptr)
-                {
-                    Node* newNode = new Node(value);
-                    node->left = newNode;
-                    return;
-                }
-                insert(value , node->left);
-            }
-
-            if(value > node->data)
-            {
-                if(node->right == nullptr)
-                {
-                    Node* newNode = new Node(value);
-                    node->right = newNode;
-                    return;
-                }
-                insert(value , node->right);
-            }
-            
-        }
+        
 
         bool search(int value , Node* node)
         {
@@ -118,6 +104,8 @@ class Tree{
                    return search(value , node->right);
                 }
             }
+
+            return false;
 
         }
 
@@ -159,14 +147,11 @@ class Tree{
                 {
                     Node* min = findMin(node->right);
                     node->data = min->data;
-                    delete min;
-                    min = nullptr;
+                    node->right = deleteNode(min->data , node->right);
                 }
             }
-            else
-            {
-                return node;
-            }
+
+            return node;
         }
 
         Node* findMin(Node* node)
@@ -175,4 +160,118 @@ class Tree{
             if(node->left == nullptr) return node;
             return findMin(node->left);
         }
+
+        void destroyTree(Node* node)
+        {
+            if(node == nullptr) return;
+
+            destroyTree(node->left);
+            destroyTree(node->right);
+            delete node;
+            node = nullptr;
+        }
+    public:
+        Tree()
+        {
+            root = nullptr;
+        }
+        ~Tree()
+        {
+            destroyTree(root);
+        }
+        void createTree(int value , int left , int right)
+        {
+            Node* newRoot = new Node(value);
+            Node* newLeft = new Node(left);
+            Node* newRight = new Node(right);
+
+            root = newRoot;
+            root->left = newLeft;
+            root->right = newRight;
+        }
+        
+        void insert(int value)
+        {
+            insert(value,root);
+        }
+
+        void preOrder()
+        {
+            preOrder(root);
+        }
+
+        void inOrder()
+        {
+            inOrder(root);
+        }
+
+        void postOrder()
+        {
+            postOrder(root);
+        }
+
+        bool search(int value)
+        {
+            return search(value , root);
+        }
+
+        void deleteNode(int value)
+        {
+            root = deleteNode(value , root);
+        }
+
+        Node* findMin()
+        {
+            return findMin(root);
+        }
+
+        void levelOrder()
+        {
+            queue<Node*> q;
+            if(root == nullptr) return;
+            
+            Node* temp = root;
+            q.push(temp);
+            while(!q.empty())
+            {
+                Node* temp = q.front();
+                q.pop();
+                cout << temp->data << " ";
+                if(temp->left != nullptr)
+                {
+                    q.push(temp->left);
+                }
+                if(temp->right != nullptr)
+                {
+                    q.push(temp->right);
+                }
+
+            }
+        }
+
 };
+
+
+int main()
+{
+    Tree t;
+    t.insert(10);
+    t.insert(5);
+    t.insert(20);
+    t.insert(3);
+    t.insert(7);
+    t.insert(15);
+    t.insert(25);
+
+    t.deleteNode(3);
+    t.inOrder();
+    cout << endl;
+    t.inOrder();
+    cout << endl;
+    t.postOrder();
+    cout << endl;
+    t.levelOrder();
+    cout << endl;
+    t.deleteNode(50);
+    t.levelOrder();
+}
